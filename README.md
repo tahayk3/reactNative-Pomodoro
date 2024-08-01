@@ -1,54 +1,10 @@
-# Welcome to your Expo app 👋
+# Hola! 👋, esta es una aplicacion de pomodoro para android, utiliza React Native y Expo, puedes descarla y probarla por medio de este enlace de Expo o usando el siguiente QR
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+https://expo.dev/accounts/tahayk3/projects/pomodoro/builds/cf89f935-8cf7-4cd6-b64c-8746b212580d
 
 
-Imagen de la app
+![Captura de pantalla 2024-08-01 155700](https://github.com/user-attachments/assets/9e81b7a8-ebd3-4b7a-83c2-0cbc5c3b900b)
+
+
+#Imagen de la app
 ![Captura de pantalla 2024-08-01 095542](https://github.com/user-attachments/assets/8180ba5b-9040-47f7-935c-6cf19750754c)
