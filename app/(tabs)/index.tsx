@@ -1,70 +1,106 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, Button, View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { useState, useEffect } from 'react';
+import { Header } from '@/components/Header';
+import { Timer } from '@/components/Timer';
+
+import {Audio} from "expo-av";
+
+
+//constantes(en array) para colores de la app
+const colors =["#fa3005", "#9baef5", "#feda25" ]
 
 export default function HomeScreen() {
+  //estado para ver si se esta corriendo el tiempo o no
+  const [isWorking, setIsWorking] = useState(false);
+  //Estado del pomodoro
+  const [time, setTime] = useState(25 * 60);
+  //Estado del tab
+  const [currentTime, setCurrentTime] = useState(0 | 1 | 2);
+
+  //funcion, estado para iniciar o detener el tiempo
+  const [isActive, setIsActve] = useState(false);
+  function handlerStartStop(){
+    playSound();
+    setIsActve(!isActive);
+  }
+
+  //funcion para reproducir audio
+  async function playSound(){
+    const { sound } = await Audio.Sound.createAsync(
+      require("@/assets/audio/reloj.mp3")
+    )
+    await sound.playAsync();
+  }
+
+  //UseEffect para manejar el temporizador
+  useEffect(()=>{
+    let interval = null;
+    if (isActive){
+      //correr tiempo 
+      interval = setInterval(()=>{
+        setTime(time -1);
+      }, 1000);
+    }else{
+      //limpiar intervalo
+      clearInterval(interval);
+    }
+
+    //si los segundos llegan a 0, se reinicia
+    if(time === 0){
+      setIsActve(false);
+      setIsWorking(prev =>!prev);
+      setTime(isWorking ? 300: 1500)
+    }
+    return ()=> clearInterval(interval)
+  },[isActive, time]);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaProvider 
+      style={[styles.container, { backgroundColor: colors[currentTime] }]}
+    >
+      <View style={{
+        flex:1, 
+        paddingHorizontal: 15,
+        paddingTop: Platform.OS === "android" ? 30 : 0 
+        }}>
+      <Text style={styles.text}>Pomodoro</Text>
+      <Header 
+        currentTime ={ currentTime}
+        setCurrentTime ={ setCurrentTime }
+        setTime= { setTime }
+      />
+
+      <Timer time={time} />
+
+      <TouchableOpacity onPress={handlerStartStop} style={styles.button}>
+        <Text style={{
+          color:"white", 
+          fontWeight: "bold"}}
+        >{isActive ? "STOP": "START"}
+        </Text>
+      </TouchableOpacity>
+
+    </View>
+    </SafeAreaProvider>
   );
 }
 
+//Estilos de la app
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex:1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  text: {
+    fontSize: 32,
+    fontWeight: "bold",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  button:{
+    backgroundColor: "#333333",
+    padding: 15,
+    marginTop:15,
+    alignItems:"center",
+    borderRadius:5,
+  }
 });
